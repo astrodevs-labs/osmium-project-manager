@@ -4,6 +4,7 @@ import newPr from "./new-pr";
 import closedPr from "./closed-pr";
 import assignedIssue from "./assigned-issue";
 import changesRequestedPr from "./changes-requested-pr";
+import inProgressPrCard from "./in-progress-pr-card";
 
 export = (app: Probot) => {
   app.on("issues.opened", newIssue);
@@ -11,9 +12,7 @@ export = (app: Probot) => {
   app.on("pull_request.closed", closedPr);
   app.on("issues.assigned", assignedIssue);
   app.on("pull_request_review.submitted", changesRequestedPr);
-  app.on("projects_v2_item.edited", async (context) => {
-    console.log(context.payload);
-  });
+  app.on("projects_v2_item.edited", inProgressPrCard);
   // For more information on building apps:
   // https://probot.github.io/docs/
 

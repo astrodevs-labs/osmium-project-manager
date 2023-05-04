@@ -15,6 +15,8 @@ export type Config = {
   cardDevelopmentReviewStatusFieldName: string
   cardReviewStatusChangesRequested: string
 
+  cardReviewStatusInReview: string
+
   cardTypeUserStory: string
   cardTypeTechnicalStory: string
   cardTypeBug: string
