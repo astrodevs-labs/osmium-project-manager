@@ -1,16 +1,11 @@
-import {Config} from "./Config";
+import {Config} from "../types/Config";
+import DefaultValues from "../types/DefaultValues";
 
 export = async (context: any) => {
-  console.log(context.payload);
-  if (context.payload.projects_v2_item.content_type !== "PullRequest") {
-    context.log("Not a PR");
-    return;
-  }
-
   const config: Config = (await context.octokit.config.get({
-    owner: 'astrodevs-labs',
-    repo: 'test-project-organization',
-    path: '.github/project-management.yml',
+    owner: DefaultValues.organizationName,
+    repo: DefaultValues.repositoryName,
+    path: DefaultValues.path,
     branch: 'master'
   })).config;
   console.log(config)
@@ -35,6 +30,7 @@ export = async (context: any) => {
                             id
                             field {
                               ... on ProjectV2SingleSelectField {
+                                id
                                 options {
                                   id
                                   name
@@ -103,8 +99,33 @@ export = async (context: any) => {
   }
 
   const cardsToMove = cardItem.content.projectItems.nodes;
+  const mutation = `#graphql
+    mutation($input: UpdateProjectV2ItemFieldValueInput!) {
+      updateProjectV2ItemFieldValue(input: $input) {
+        projectV2Item {
+          id
+        }
+      }
+    }`
 
-  const moveCardsQuery = `#graphql
-    mutation MoveCards($cardIds: [ID!]!, $columnId: ID!) {
+  for (const card of cardsToMove) {
+    const fieldId = card.fieldValueByName.field.id;
+    const optionId = card.fieldValueByName.field.options.find((option: any) => option.name === config.cardReviewStatusInReview)?.id;
+
+    const variables = {
+      input: {
+        projectId: card.project.id,
+        itemId: card.id,
+        value: {
+          singleSelectOptionId: optionId
+        },
+        fieldId: fieldId
+      }
+    }
+
+    console.log(variables)
+
+    await context.octokit.graphql(mutation, variables);
+  }
     
 }

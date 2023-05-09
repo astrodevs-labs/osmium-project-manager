@@ -1,4 +1,4 @@
-import { Config } from "./Config";
+import { Config } from "./types/Config";
 
 type Project = {
   id: string

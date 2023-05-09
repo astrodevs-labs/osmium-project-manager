@@ -11,11 +11,18 @@ export type Config = {
 
   cardTypeFieldName: string
   cardReviewStatusFieldName: string
+  cardPreparationStatusFieldName: string
+  cardLoadFieldName: string
+  cardIterationFieldName: string
   cardManagementReviewStatusStart: string
   cardDevelopmentReviewStatusFieldName: string
   cardReviewStatusChangesRequested: string
-
   cardReviewStatusInReview: string
+  cardReviewStatusFunctionalReview: string
+  cardReviewStatusStaging: string
+  cardReviewStatusDone: string
+  cardStatusPlanned: string
+  cardDevelopmentStatusStart: string
 
   cardTypeUserStory: string
   cardTypeTechnicalStory: string

@@ -1,9 +1,6 @@
-import {Config} from "./Config";
+import {Config} from "../types/Config";
 
 export = async (context: any) => {
-  if (context.payload.review.state !== 'changes_requested')
-    return
-
   const config: Config = await context.config('project-management.yml');
   console.log(config)
   if (!config) {

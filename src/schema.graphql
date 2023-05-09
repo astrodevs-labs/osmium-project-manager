@@ -1,0 +1,50 @@
+interface Coponent {
+    id: ID!
+    name: String!
+    books: [Book]
+}
+
+type Button implements Library {
+    id: ID!
+    name: String!
+    books: [Book]
+    a: String
+}
+
+type Query {
+    libraries: [Library]
+    library(id: ID!): Library
+    authors: [Author]
+    author(id: ID!): Author
+    books: [Book]
+    book(id: ID!): Book
+}
+
+type Mutation {
+    addLibrary(name: String!): Library
+    addAuthor(name: String!): Author
+    addBook(title: String!, authorId: ID!): Book
+    addBookToLibrary(bookId: ID!, libraryId: ID!): Book
+
+    ComponentInteracted(id: ID!, interaction: String!):
+}
+
+type ButtonClickedResponse {
+    id: ID!
+    status: Boolean
+}
+
+type Subscription {
+    bookAdded: Book
+    buttonClicked
+}
+
+<App>
+    <Layout>
+        <TopBar>
+            <Button />
+        </Header>
+        <Content>
+            <BookList />
+        </Content>
+</App>
