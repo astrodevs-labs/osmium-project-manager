@@ -16,7 +16,7 @@ export interface FieldValueByName {
   }
 }
 
-export class PullRequestService {
+export class PullRequestRepository {
   static async getLinkedProjectCards(octokit: any, owner: string, repo: string, prNumber: string): Promise<Card[]> {
       const query = `#graphql
         query Nodes($number: Int!, $owner: String!, $name: String!) {

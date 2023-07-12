@@ -2,7 +2,8 @@ type FieldValue = {
   singleSelectOptionId: string
 }
 
-export class CardService {
+
+export class CardRepository {
   static async createFromItem(octokit: any, projectId: string, item: string) {
     const createMutation = `#graphql
       mutation($input: AddProjectV2ItemByIdInput!) {

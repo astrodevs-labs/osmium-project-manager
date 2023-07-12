@@ -3,7 +3,7 @@ export interface Project {
   id: string;
 }
 
-export class OrganizationService {
+export class OrganizationRepository {
 
     static async getProjects(octokit: any, org: string) : Promise<Project[]> {
       const query = `

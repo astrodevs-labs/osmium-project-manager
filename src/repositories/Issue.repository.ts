@@ -3,7 +3,7 @@ export interface Issue {
   trackedInIssues: { nodes: Issue[] };
 }
 
-export class IssueService {
+export class IssueRepository {
 
   private static _issueTrakedTemplate = `
                       trackedInIssues(first: 1) {
@@ -37,7 +37,7 @@ export class IssueService {
     return query.replace("#CHILD", "");
   }
 
-  static async getParents(context: any, org: string, repo: string, issue: string, recurse: number) : Promise<Issue> {
+  static async getParents(context: any, org: string, repo: string, issue: string, recurse: number) : Promise<IssueRepository> {
     const query = this.createTrackedIssuesReq(recurse);
 
     const variables = {
