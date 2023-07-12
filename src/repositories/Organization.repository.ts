@@ -25,7 +25,7 @@ export class OrganizationRepository {
         organization: org
       }
 
-      const result = octokit.graphql(query, variables);
+      const result = await octokit.graphql(query, variables);
 
       const ret = result?.organization?.projectsV2?.nodes;
       if (!ret) {

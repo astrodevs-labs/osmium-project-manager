@@ -1,12 +1,28 @@
 import {injectable} from "inversify";
 
+export interface NewCard {
+  id: string
+  project: {
+    fields: {
+      nodes: {
+        name: string
+        id: string
+        options: {
+          name: string
+          id: string
+        }[]
+      }[]
+    }
+  }
+}
+
 type FieldValue = {
   singleSelectOptionId: string
 }
 
 @injectable()
 export class CardRepository {
-  async createFromItem(octokit: any, projectId: string, item: string) {
+  async createFromItem(octokit: any, projectId: string, item: string): Promise<NewCard> {
     const createMutation = `#graphql
       mutation($input: AddProjectV2ItemByIdInput!) {
         addProjectV2ItemById(input: $input) {
@@ -45,7 +61,8 @@ export class CardRepository {
       }
     }
 
-    return octokit.graphql(createMutation, createVariables)
+    const result = await octokit.graphql(createMutation, createVariables)
+    return result.addProjectV2ItemById.item
   }
   async updateFieldValue(octokit: any, projectId: string, cardId: string, fieldId: string, value: FieldValue) {
       const mutation = `#graphql

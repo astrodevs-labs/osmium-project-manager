@@ -1,6 +1,10 @@
 // import { EmitterWebhookEvent } from "@octokit/webhooks/dist-types/types";
-import { Config} from "../types/Config";
-
+// import { Config} from "../types/Config";
+import {injectable} from "inversify";
+import {IController} from "./IController";
+import {IssueService} from "../services/Issue.service";
+import {ConfigService} from "../services/Config.service";
+/*
 type Project = {
   id: string
   title: string
@@ -135,6 +139,9 @@ const setLabel = async (context: any, cardInformation: CardInformation, config: 
               }
             }`
 
+  /*
+  LabelsService.getTypeFromLabels(context.payload.issue.labels, config)
+   * /
   const isUserStory = context.payload.issue.labels.some((label: { name: string }) => label.name === config.userStoryLabel)
   const isBug = context.payload.issue.labels.some((label: { name: string }) => label.name === config.bugLabel)
   const isTask = context.payload.issue.labels.some((label: { name: string }) => label.name === config.taskLabel)
@@ -150,6 +157,7 @@ const setLabel = async (context: any, cardInformation: CardInformation, config: 
   } else if (isTask) {
     optionToFind = config.taskLabel
   }
+  ////////////
 
   const typeField = cardInformation.fields.find(field => field.name === config.cardTypeFieldName)
   const userStoryOption = typeField?.options?.find(option => option.name === optionToFind)
@@ -168,7 +176,7 @@ const setLabel = async (context: any, cardInformation: CardInformation, config: 
   await context.octokit.graphql(mutation, variables)
 }
 
-export = async (context: any) => {
+export default async (context: any) => {
   const config: Config = await context.config('project-management.yml');
   console.log(config)
   if (!config) {
@@ -179,4 +187,26 @@ export = async (context: any) => {
   const infos = await createCard(context, project);
   await setStatus(context, infos, config);
   await setLabel(context, infos, config);
+}
+*/
+@injectable()
+export class NewIssueController implements IController {
+  constructor(
+    private issueService: IssueService,
+    private configService: ConfigService
+  ) {}
+
+  async run(context: any): Promise<void> {
+    try {
+      await this.configService.setContext(context);
+      const config = await this.configService.retrieveConfig();
+
+      this.issueService.setConfig(config);
+      this.issueService.setContext(context);
+      await this.issueService.createCard()
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
 }
