@@ -1,5 +1,5 @@
-import { Config } from "../types/Config";
-import DefaultValues from "../types/DefaultValues";
+import { Config } from "../../types/Config";
+import DefaultValues from "../../types/DefaultValues";
 
 type CardInformation = {
   cardId: string

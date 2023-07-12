@@ -1,5 +1,5 @@
 // import { EmitterWebhookEvent } from "@octokit/webhooks/dist-types/types";
-import { Config} from "./types/Config";
+import { Config} from "../types/Config";
 
 type Project = {
   id: string

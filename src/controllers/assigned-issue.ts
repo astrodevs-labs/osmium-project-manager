@@ -1,4 +1,4 @@
-import { Config } from "./types/Config";
+import { Config } from "../types/Config";
 
 const findBranchNodes = async (context: any, config: Config) => {
   let branchName = ''

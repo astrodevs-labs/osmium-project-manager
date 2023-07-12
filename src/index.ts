@@ -1,12 +1,12 @@
 import { Probot } from "probot";
 import commands from "probot-commands";
-import newIssue from "./new-issue";
-import newPr from "./new-pr";
-import assignedIssue from "./assigned-issue";
-import pullRequestReview from "./pull-request-review";
-import inProgressPrCard from "./project-v2-item-edited";
-import codeReviewOk from "./code-review-ok";
-import pullRequestClosed from "./pull-request-closed";
+import newIssue from "./controllers/new-issue";
+import newPr from "./controllers/new-pr";
+import assignedIssue from "./controllers/assigned-issue";
+import pullRequestReview from "./controllers/pull-request-review";
+import inProgressPrCard from "./controllers/project-v2-item-edited";
+import codeReviewOk from "./controllers/code-review-ok";
+import pullRequestClosed from "./controllers/pull-request-closed";
 
 export = (app: Probot) => {
   app.on("issues.opened", newIssue);

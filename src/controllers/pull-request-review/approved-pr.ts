@@ -1,4 +1,4 @@
-import {Config} from "../types/Config";
+import {Config} from "../../types/Config";
 
 export = async (context: any) => {
   const config: Config = await context.config('project-management.yml');
