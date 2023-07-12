@@ -1,11 +1,14 @@
+import {injectable} from "inversify";
+
 export interface Project {
   title: string;
   id: string;
 }
 
+@injectable()
 export class OrganizationRepository {
 
-    static async getProjects(octokit: any, org: string) : Promise<Project[]> {
+    async getProjects(octokit: any, org: string) : Promise<Project[]> {
       const query = `
          query($organization: String!) {
           organization(login: $organization) {
@@ -34,7 +37,7 @@ export class OrganizationRepository {
       return ret;
     }
 
-    static async getProject(octokit: any, org: string, project: string) : Promise<Project> {
+    async getProject(octokit: any, org: string, project: string) : Promise<Project> {
         const projects = await this.getProjects(octokit, org);
         const found = projects.find((proj) => proj.title === project);
 

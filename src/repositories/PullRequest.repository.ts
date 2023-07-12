@@ -1,3 +1,5 @@
+import {injectable} from "inversify";
+
 export interface Card {
   id: string;
   project: {
@@ -16,8 +18,9 @@ export interface FieldValueByName {
   }
 }
 
+@injectable()
 export class PullRequestRepository {
-  static async getLinkedProjectCards(octokit: any, owner: string, repo: string, prNumber: string): Promise<Card[]> {
+  async getLinkedProjectCards(octokit: any, owner: string, repo: string, prNumber: string): Promise<Card[]> {
       const query = `#graphql
         query Nodes($number: Int!, $owner: String!, $name: String!) {
           repository(owner: $owner, name: $name) {
@@ -45,7 +48,7 @@ export class PullRequestRepository {
     return result.repository.pullRequest.projectItems.nodes
   }
 
-  static async getlinkedProjectCardsWithFieldValue(octokit: any, owner: string, repo: string, prNumber: string, fieldName: string): Promise<(Card & FieldValueByName)[]> {
+  async getlinkedProjectCardsWithFieldValue(octokit: any, owner: string, repo: string, prNumber: string, fieldName: string): Promise<(Card & FieldValueByName)[]> {
       const query = `#graphql
         query Nodes($number: Int!, $owner: String!, $repoName: String!, $name: String!) {
           repository(owner: $owner, name: $repoName) {

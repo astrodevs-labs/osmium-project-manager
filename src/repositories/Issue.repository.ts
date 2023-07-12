@@ -1,8 +1,11 @@
+import {injectable} from "inversify";
+
 export interface Issue {
   title: string;
   trackedInIssues: { nodes: Issue[] };
 }
 
+@injectable()
 export class IssueRepository {
 
   private static _issueTrakedTemplate = `
@@ -18,7 +21,7 @@ export class IssueRepository {
                       }
                     }`;
 
-  private static createTrackedIssuesReq(recurse: number) : string {
+  private createTrackedIssuesReq(recurse: number) : string {
     let query = `query Nodes($number: Int!, $repo: String!, $organization: String!) {
               organization(login: $organization) {
                 repository(name: $repo) {
@@ -31,13 +34,13 @@ export class IssueRepository {
             }`;
 
     do {
-      query = query.replace("#CHILD", this._issueTrakedTemplate)
+      query = query.replace("#CHILD", IssueRepository._issueTrakedTemplate)
     } while (recurse--);
 
     return query.replace("#CHILD", "");
   }
 
-  static async getParents(context: any, org: string, repo: string, issue: string, recurse: number) : Promise<IssueRepository> {
+  async getParents(context: any, org: string, repo: string, issue: string, recurse: number) : Promise<IssueRepository> {
     const query = this.createTrackedIssuesReq(recurse);
 
     const variables = {

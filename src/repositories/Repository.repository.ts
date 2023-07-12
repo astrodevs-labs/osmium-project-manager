@@ -1,5 +1,8 @@
+import {injectable} from "inversify";
+
+@injectable()
 export class RepositoryRepository {
-  static async createDispatchEvent(octokit: any, owner: string, repo: string, eventType: string, clientPayload: any) {
+  async createDispatchEvent(octokit: any, owner: string, repo: string, eventType: string, clientPayload: any) {
     return octokit.repos.createDispatchEvent({
       owner: owner,
       repo: repo,
